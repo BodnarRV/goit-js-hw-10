@@ -1,0 +1,33 @@
+.form {
+    max-width: 360px;
+}
+
+button {
+    margin-top: 24px;
+    background-color: #4E75FF;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 88px;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0.04em;
+    transition: background-color 200ms ease-in-out;
+    width: 100%;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #6C8CFF;
+}
+
+fieldset {
+    margin-top: 24px;
+}
+
+input[type="number"][name="delay"] {
+    width: 100%;
+    padding: 8px 16px;
+}
