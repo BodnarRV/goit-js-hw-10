@@ -10,19 +10,9 @@ function createPromise(isSuccess, delay) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             if (isSuccess) {
-                iziToast.success({
-                    title: 'Success',
-                    message: `Fulfilled promise in ${delay}ms`, 
-                    position: 'topRight'
-                });
-                resolve();
+                resolve(delay);
             } else {
-                iziToast.error({
-                    title: 'Error',
-                    message: `Rejected promise in ${delay}ms`, 
-                    position: 'topRight'
-                });
-                reject();
+                reject(delay);
             }
         }, delay);
     });
@@ -34,12 +24,11 @@ function clearInputs() {
     radioRejected.checked = false;
 }
 
-
 notificationBtn.addEventListener("click", event => {
     event.preventDefault();
 
-    const delayValue = delayInput.value;
-    
+    const delayValue = parseInt(delayInput.value);
+
     if (!delayValue || delayValue <= 0) {
         iziToast.error({
             title: 'Error',
@@ -49,11 +38,36 @@ notificationBtn.addEventListener("click", event => {
         return;
     }
 
+    let promise;
     if (radioFulfilled.checked) {
-        createPromise(true, delayValue);
-        clearInputs()
+        promise = createPromise(true, delayValue);
     } else if (radioRejected.checked) {
-        createPromise(false, delayValue);
-        clearInputs()
+        promise = createPromise(false, delayValue);
+    } else {
+        iziToast.error({
+            title: 'Error',
+            message: 'Please select promise state',
+            position: 'topRight'
+        });
+        return;
     }
+
+    promise
+        .then(delay => {
+            iziToast.success({
+                title: 'Success',
+                message: `Fulfilled promise in ${delay}ms`,
+                position: 'topRight'
+            });
+        })
+        .catch(delay => {
+            iziToast.error({
+                title: 'Error',
+                message: `Rejected promise in ${delay}ms`,
+                position: 'topRight'
+            });
+        })
+        .finally(() => {
+            clearInputs();
+        });
 });
